@@ -46,7 +46,7 @@
                     </ul>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="reservations.html" aria-disabled="true">Book Now</a>
+                    <a class="nav-link" href="book.html" aria-disabled="true">Book Now</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="contact.html" aria-disabled="true">Contact</a>
@@ -61,21 +61,30 @@
            
 
           <div class="row">
-            <div class="col">
-              <h1 class="text-center mt-4">This will be the Booking Page</h1>
+            <div class="col-md-3"></div>
+            <div class="col-md-5">
+              <h1 class="mt-5">Check For Room Availability</h1>
+             
+            <form action="book.html" method="GET">
+                 <div class="mb-3">
+                    <label for="start-date" class="form-label">Staring Date</label>
+                    <input required type="date" class="form-control" id="start-date" name="start-date" aria-describedby="startDateHelp">
+                    <div id="startDateHelp" class="form-text">Enter your starting date.</div>
+                      
+                    <label for="end-date" class="form-label">Ending Date</label>
+                    <input required type="date" class="form-control" id="end-date" name="end-date" aria-describedby="endDateHelp">
+                    <div id="endDateHelp" class="form-text">Enter your ending date.</div>
+            </div>
+                
+                <button type="search" class="btn btn-primary">Search</button>
+            </form>
             </div>
           </div>    
         
           <div class="row">
             <div class="col text-center">
             </div>
-          </div>
-
-          <div class="row">
-            <div class="col text-center">
-              <a href="/reservations-ms" class="btn btn-success">Book Now</a>
-            </div>
-            
+          </div>     
           </div>
       
         
