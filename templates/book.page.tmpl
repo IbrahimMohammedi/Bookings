@@ -9,7 +9,8 @@
             <div class="col-md-5">
               <h1 class="mt-5">Check For Room Availability</h1>
              
-            <form action="book.html" method="GET" novalidate class="needs-validation">
+            <form action="/booking" method="post" novalidate class="needs-validation">
+              <input type=hidden name="csrf_token" value="{{.CSRFToken}}">
               <div class="row">
                 <div class="col">
                   

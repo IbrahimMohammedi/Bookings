@@ -58,7 +58,19 @@
                 </div>
             </form> 
             `
-            attention.custom({msg:html, title: "Choose your dates"})  
+            attention.custom({
+              msg:html, 
+              title: "Choose your dates",
+              callback: function(result){
+              console.log("called");
+
+              fetch('/BookJSON')
+                .then(response => response.json() )
+                .then(data => {
+                  console.log(data);
+                })
+              }
+            });
         })
     </script>
 
