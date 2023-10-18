@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/IbrahimMohammedi/Bookings/internal/config"
 	"github.com/IbrahimMohammedi/Bookings/internal/handlers"
+	"github.com/IbrahimMohammedi/Bookings/internal/helpers"
 	"github.com/IbrahimMohammedi/Bookings/internal/models"
 	"github.com/IbrahimMohammedi/Bookings/internal/render"
 	"github.com/alexedwards/scs/v2"
@@ -18,6 +20,8 @@ const portNumber = ":8080"
 
 var app config.AppConfig
 var session *scs.SessionManager
+var infoLog *log.Logger
+var errorLog *log.Logger
 
 // main is the main function
 func main() {
@@ -26,6 +30,11 @@ func main() {
 	// change this to true when in production
 	app.InProduction = false
 
+	infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	app.InfoLog = infoLog
+
+	errorLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lshortfile)
+	app.ErrorLog = errorLog
 	// set up the session
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
@@ -47,6 +56,7 @@ func main() {
 	handlers.NewHandlers(repo)
 
 	render.NewTemplates(&app)
+	helpers.NewHelpers(&app)
 
 	fmt.Println(fmt.Sprintf("Staring application on port %s", portNumber))
 
