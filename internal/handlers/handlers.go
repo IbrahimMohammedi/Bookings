@@ -6,10 +6,13 @@ import (
 	"net/http"
 
 	"github.com/IbrahimMohammedi/Bookings/internal/config"
+	"github.com/IbrahimMohammedi/Bookings/internal/driver"
 	"github.com/IbrahimMohammedi/Bookings/internal/forms"
 	"github.com/IbrahimMohammedi/Bookings/internal/helpers"
 	"github.com/IbrahimMohammedi/Bookings/internal/models"
 	"github.com/IbrahimMohammedi/Bookings/internal/render"
+	"github.com/IbrahimMohammedi/Bookings/internal/repository"
+	"github.com/IbrahimMohammedi/Bookings/internal/repository/dbrepo"
 )
 
 // Repo the repository used by the handlers
@@ -18,12 +21,14 @@ var Repo *Repository
 // Repository is the repository type
 type Repository struct {
 	App *config.AppConfig
+	DB  repository.DatabaseRepo
 }
 
 // NewRepo creates a new repository
-func NewRepo(a *config.AppConfig) *Repository {
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB:  dbrepo.NewPostgresRepo(db.SQL, a),
 	}
 }
 
@@ -34,6 +39,7 @@ func NewHandlers(r *Repository) {
 
 // Home is the handler for the home page
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
+	m.DB.AllUsers()
 	render.RenderTemplate(w, r, "home.page.tmpl", &models.TemplateData{})
 }
 
@@ -110,7 +116,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	form := forms.New(r.PostForm)
 
 	form.Required("first_name", "last_name", "email", "phone")
-	form.MinLength("first_name", 3, r)
+	form.MinLength("first_name", 3)
 	form.IsEmail("email")
 
 	if !form.Valid() {

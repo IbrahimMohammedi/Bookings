@@ -16,4 +16,5 @@ func NewPostgresRepo(conn *sql.DB, a *config.AppConfig) repository.DatabaseRepo 
 	return &PostgresDBRepo{
 		App: a,
 		DB:  conn,
+	}
 }
