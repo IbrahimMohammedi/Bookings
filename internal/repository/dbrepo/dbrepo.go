@@ -7,13 +7,13 @@ import (
 	"github.com/IbrahimMohammedi/Bookings/internal/repository"
 )
 
-type PostgresDBRepo struct {
+type postgresDBRepo struct {
 	App *config.AppConfig
 	DB  *sql.DB
 }
 
 func NewPostgresRepo(conn *sql.DB, a *config.AppConfig) repository.DatabaseRepo {
-	return &PostgresDBRepo{
+	return &postgresDBRepo{
 		App: a,
 		DB:  conn,
 	}
