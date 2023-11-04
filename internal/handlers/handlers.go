@@ -64,6 +64,27 @@ func (m *Repository) Book(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) PostBook(w http.ResponseWriter, r *http.Request) {
 	start := r.Form.Get("start")
 	end := r.Form.Get("end")
+
+	layout := "02/01/2006"
+	startDate, err := time.Parse(layout, start)
+	if err != nil {
+		helpers.ServerError(w, err)
+	}
+	endDate, err := time.Parse(layout, end)
+	if err != nil {
+		helpers.ServerError(w, err)
+	}
+
+	rooms, err := m.DB.SearchAvailabilityForAllRooms(startDate, endDate)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	for _, i := range rooms {
+		m.App.InfoLog.Println("Room:", i.ID, i.RoomName)
+	}
+
 	w.Write([]byte(fmt.Sprintf("Start date is %s and End date is %s", start, end)))
 }
 
@@ -111,7 +132,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	sd := r.Form.Get("start_date")
 	ed := r.Form.Get("end_date")
 
-	layout := "2006-01-02"
+	layout := "02/01/2006"
 	startDate, err := time.Parse(layout, sd)
 	if err != nil {
 		helpers.ServerError(w, err)
@@ -191,5 +212,3 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 		Data: data,
 	})
 }
-
-func (m *postg)
